@@ -7,4 +7,4 @@
 - [x] Expose `get_chatgpt_quota` as a stdio MCP tool.
 - [x] Add install/run/tunnel instructions.
 - [x] Add CI for lint, typecheck, tests, and build.
-- [ ] Verify CI and push directly to `main`.
+- [x] Verify CI and push directly to `main`.

@@ -83,4 +83,4 @@
 - [x] Add setup instructions with no secrets committed.
 - [x] Add CI commands: `ruff check .`, `ruff format --check .`, `mypy src`, `pytest`, and `uv build`.
 - [x] Run local tests, compile check, and offline package build.
-- [ ] Push to `main`, then inspect GitHub Actions and fix failures until green.
+- [x] Push to `main`, inspect GitHub Actions, and fix failures until green.
