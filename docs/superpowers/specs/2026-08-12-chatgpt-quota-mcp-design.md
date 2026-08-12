@@ -6,7 +6,7 @@ Expose one local MCP tool, `get_chatgpt_quota`, that reads the signed-in user's 
 
 ## Chosen approach
 
-Use a small Python MCP server over stdio. The tool starts `codex app-server --stdio`, performs the required `initialize` -> `initialized` handshake, calls `account/rateLimits/read`, normalizes the response, then terminates the child process.
+Use a small Python MCP v2 server over stdio. The tool starts `codex app-server --stdio`, performs the required `initialize` -> `initialized` handshake, calls `account/rateLimits/read`, normalizes the response, then terminates the child process.
 
 This is preferred over:
 
@@ -33,7 +33,8 @@ Codex adapter
 
 - `quota.py`: pure normalization from Codex's rate-limit response to stable tool output.
 - `codex.py`: subprocess and JSON-RPC protocol boundary for Codex App Server.
-- `server.py`: MCP registration only; exposes the single tool and delegates to the service.
+- `service.py`: orchestration between Codex I/O and normalization.
+- `server.py`: MCP v2 `MCPServer` registration only; exposes the single tool and delegates to the service.
 
 ## Tool contract
 
@@ -74,8 +75,9 @@ TDD covers:
 1. Normalization of one and two quota windows.
 2. Codex handshake and ignoring unrelated notifications before the matching response.
 3. Codex JSON-RPC errors and missing executable errors.
-4. MCP tool exposure through the official Python MCP SDK.
-5. CI runs Ruff, mypy, pytest, and package build.
+4. MCP tool registration.
+5. A real MCP v2 stdio round trip using a fake Codex executable.
+6. CI runs Ruff, mypy, pytest, and package build.
 
 ## Scope
 
