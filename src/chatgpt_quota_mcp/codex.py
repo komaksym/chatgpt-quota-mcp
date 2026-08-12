@@ -8,7 +8,7 @@ import subprocess
 import threading
 import time
 from collections.abc import Mapping, Sequence
-from typing import Any, TextIO
+from typing import IO, Any
 
 DEFAULT_CODEX_COMMAND = ("codex", "app-server", "--stdio")
 
@@ -17,18 +17,18 @@ class CodexAppServerError(RuntimeError):
     """Raised when the Codex CLI or App Server protocol cannot return quota."""
 
 
-def _write_message(stream: TextIO, message: Mapping[str, Any]) -> None:
+def _write_message(stream: IO[str], message: Mapping[str, Any]) -> None:
     """Write one newline-delimited JSON-RPC message to Codex and flush it."""
     stream.write(json.dumps(message, separators=(",", ":")) + "\n")
     stream.flush()
 
 
-def _enqueue_line(stream: TextIO, output: queue.Queue[str]) -> None:
+def _enqueue_line(stream: IO[str], output: queue.Queue[str]) -> None:
     """Read one line from a pipe and place it on a queue for timeout handling."""
     output.put(stream.readline())
 
 
-def _readline_with_timeout(stream: TextIO, timeout_s: float) -> str:
+def _readline_with_timeout(stream: IO[str], timeout_s: float) -> str:
     """Read one pipe line while enforcing a timeout without relying on fd buffering."""
     output: queue.Queue[str] = queue.Queue(maxsize=1)
     reader = threading.Thread(
