@@ -16,8 +16,7 @@ def _write_fake_server(path: Path, response_code: str) -> None:
         "initialized = json.loads(sys.stdin.readline())\n"
         "assert initialized['method'] == 'initialized' and 'id' not in initialized\n"
         "req = json.loads(sys.stdin.readline())\n"
-        "assert req['method'] == 'account/rateLimits/read'\n"
-        + response_code
+        "assert req['method'] == 'account/rateLimits/read'\n" + response_code
     )
 
 
